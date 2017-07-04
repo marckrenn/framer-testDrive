@@ -4,14 +4,18 @@ plugin.run = (contents, options) ->
 	
 	# <fold>
 	# Include testDrive + Instructions
+
+	# testDrive loader
 	td = "testDrive.js"
+	source = "https://raw.githubusercontent.com/marckrenn/framer-testDrive/master/td.coffee"
+
 	if localStorage.getItem(td)?
-		exports = window
 		eval(localStorage.getItem(td))
 	else
-		Utils.domLoadData "http://krenn.me/td.js", (err, module) ->
-			localStorage.setItem(td, module)
-			window.location.reload()
+		Utils.domLoadData source, (err, module) ->
+			js = CoffeeScript.compile(module, bare: true)
+			localStorage.setItem(td, js)
+			location.reload()
 
 
 	# • LOG AVAILABLE MODULES (see Inspect → Console)
